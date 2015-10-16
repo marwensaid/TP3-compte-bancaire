@@ -55,20 +55,20 @@ public class BankAccountFacade {
     }
 
     public List<BankAccount> getAll() {
-        return em.createNamedQuery("CompteBancaire.getAll").getResultList();
+        return em.createNamedQuery("BankAccount.getAll").getResultList();
     }
 
     public List<BankAccount> findAllAccount() {
-        Query q = em.createQuery("select c from CompteBancaire c");
+        Query q = em.createQuery("select c from BankAccount c");
         return q.getResultList();
     }
 
-    public void updateAccount(BankAccount compteBancaire) {
-        em.merge(compteBancaire);
+    public void updateAccount(BankAccount bankAccount) {
+        em.merge(bankAccount);
     }
 
-    public void deleteAccount(BankAccount compteBancaire) {
-        em.remove(em.merge(compteBancaire));
+    public void deleteAccount(BankAccount bankAccount) {
+        em.remove(em.merge(bankAccount));
     }
 
     public void transferAccount(int id2, int id1, double montant) {
@@ -77,14 +77,14 @@ public class BankAccountFacade {
     }
 
     public void debitAccount(int id, double montant) {
-        BankAccount compteBancaire = em.find(BankAccount.class, id);
-        compteBancaire.debit(montant);
+        BankAccount bankAccount = em.find(BankAccount.class, id);
+        bankAccount.debit(montant);
 
     }
 
     public void creditingAccount(int id, double montant) {
-        BankAccount compteBancaire = em.find(BankAccount.class, id);
-        compteBancaire.crediting(montant);
+        BankAccount bankAccount = em.find(BankAccount.class, id);
+        bankAccount.crediting(montant);
     }
 
     public void persist(Object Object) {

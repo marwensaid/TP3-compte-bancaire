@@ -172,8 +172,8 @@ public class BankAccountMBean {
         return bankAccountFacade.findAllAccount();
     }
 
-    public void creerComptesDeTest() {
-        System.out.println("### COMPTES CREES ###");
+    public void createAccountTest() {
+        System.out.println("### ACCOUNT CREATED ###");
         bankAccountFacade.createAccountTest();
     }
 
@@ -181,17 +181,17 @@ public class BankAccountMBean {
         bankAccountFacade.creditingAccount(idCompteACrediter, montantACrediter);
     }
 
-    public void debiterUnCompte() {
+    public void debitAccount() {
         bankAccountFacade.debitAccount(idCompteADebiter, montantADebiter);
     }
 
-    public void transferer() {
+    public void transfer() {
 
         try {
             bankAccountFacade.transferAccount(id1, id2, montantTransfert);
         } catch (Exception e) {
-            message = "Transfert impossible, pas assez d'argent";
-            System.out.println("### PAS ASSEZ d'argent");
+            message = "impossible tranfer";
+            System.out.println("### try tomorrow" + e);
         }
     }
 }

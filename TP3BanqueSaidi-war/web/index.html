@@ -1,16 +1,86 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Gestionnaire de comptes</title>
+    </h:head>
+    <h:body>
+        <h1>Menu principal</h1>
+        <h2>Créer des comptes de test</h2>
+        <h:form>
+            <h:commandButton 
+                value="Cliquer pour créer des comptes"
+                action="#{BankAccountMBean.createAccountTest()}">
+            </h:commandButton>
+        </h:form>
+        <h2>Créditer un compte</h2>
+        <h:form>
+            <h:outputLabel value="Id du compte "></h:outputLabel>
+            <h:inputText value="#{BankAccountMBean.idCompteACrediter}"></h:inputText>
+            <h:outputLabel value="Montant"></h:outputLabel>
+            <h:inputText value="#{BankAccountMBean.montantACrediter}"></h:inputText>
+            <h:commandButton 
+                value="Créditer le compte"
+                action="#{BankAccountMBean.creditingAccount()}">
+            </h:commandButton>
+        </h:form>
+           <h2>Débiter un compte</h2>
+        <h:form>
+            <h:outputLabel value="Id du compte "></h:outputLabel>
+            <h:inputText value="#{BankAccountMBean.idCompteADebiter}"></h:inputText>
+            <h:outputLabel value="Montant"></h:outputLabel>
+            <h:inputText value="#{BankAccountMBean.montantADebiter}"></h:inputText>
+            <h:commandButton 
+                value="Débiter le compte"
+                action="#{BankAccountMBean.debitAccount()}">
+            </h:commandButton>
+        </h:form>
+         <h2>Transfert d'argent</h2>
+        <h:form>
+            <h:outputLabel value="Id du compte source"></h:outputLabel>
+            <h:inputText value="#{comptesBancairesMBean.id1}"></h:inputText>
+            <h:outputLabel value="Id du compte destination"></h:outputLabel>
+            <h:inputText value="#{comptesBancairesMBean.id2}"></h:inputText>
+            <h:outputLabel value="Montant"></h:outputLabel>
+            <h:inputText value="#{BankAccountMBean.montantTransfert}"></h:inputText>
+            <h:commandButton 
+                value="Transférer"
+                action="#{BankAccountMBean.transfer()}">
+            </h:commandButton>
+            <h3>Résultat de l'opération: #{BankAccountMBean.message}</h3>
+        </h:form>
+        <h2>Liste des comptes</h2>
+        <f:view>
+
+
+            <h:form>
+                <h1><h:outputText value="List"/></h1>
+                <h:dataTable value="#{BankAccountMBean.bankAccount}" var="item">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Solde"/>
+                        </f:facet>
+                        <h:outputText value="#{item.solde}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </f:view>
+
+
+    </h:body>
 </html>
+
