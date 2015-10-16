@@ -5,11 +5,11 @@
  */
 package tp3.session;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import tp3.entities.CompteBancaire;
 
 /**
@@ -19,7 +19,10 @@ import tp3.entities.CompteBancaire;
 @Stateless
 public class CompteBancaireFacade {
 
-    @PersistenceContext(unitName = "TP3BanqueSaidi-ejbPU")
+    public CompteBancaireFacade() {
+    }
+
+    @PersistenceContext
     private EntityManager em;
 
     /**
@@ -32,7 +35,7 @@ public class CompteBancaireFacade {
 
     public void creerCompte(CompteBancaire[] compteBancaires) {
         for (CompteBancaire compteBancaire : compteBancaires) {
-            creerCompte(compteBancaire);
+            createAccount(compteBancaire);
         }
     }
 
@@ -40,14 +43,14 @@ public class CompteBancaireFacade {
         em.persist(compteBancaire);
     }
 
-    public void creerComptesTest() {
-        creerCompte(new CompteBancaire("John Lennon", 150000));
-        creerCompte(new CompteBancaire("Paul McCartney", 950000));
-        creerCompte(new CompteBancaire("Ringo Starr", 20000));
-        creerCompte(new CompteBancaire("Georges Harrisson", 100000));
+    public void createAccountTest() {
+        createAccount(new CompteBancaire("John Lennon", 150000));
+        createAccount(new CompteBancaire("Paul McCartney", 950000));
+        createAccount(new CompteBancaire("Ringo Starr", 20000));
+        createAccount(new CompteBancaire("Georges Harrisson", 100000));
     }
 
-    public void creerCompte(CompteBancaire compteBancaire) {
+    public void createAccount(CompteBancaire compteBancaire) {
         persist(compteBancaire);
     }
 
@@ -55,25 +58,34 @@ public class CompteBancaireFacade {
         return em.createNamedQuery("CompteBancaire.getAll").getResultList();
     }
 
+    public List<CompteBancaire> findAllAccount() {
+        Query q = em.createQuery("select c from CompteBancaire c");
+        return q.getResultList();
+    }
+
     public void updateCompte(CompteBancaire compteBancaire) {
         em.merge(compteBancaire);
     }
 
-    public void supprimerCompte(CompteBancaire compteBancaire) {
+    public void deleteAccount(CompteBancaire compteBancaire) {
         em.remove(em.merge(compteBancaire));
     }
 
-    public void transfererCompte(CompteBancaire source, CompteBancaire destination,
-            int montant) {
-        int val = source.retirer(montant);
+    public void transferAccount(int id2, int id1, double montant) {
+        debitAccount(id1, montant);
+        creditingAccount(id2, montant);
+    }
 
-        if (val == 0) {
-            LOGGER.warning("vous étes dans la merde");
-        }
+    private void debitAccount(int id, double montant) {
+                CompteBancaire compteBancaire = em.find(CompteBancaire.class, id);
+                compteBancaire.debit(montant);
+                
 
-        destination.deposer(montant);
-        updateCompte(source);
-        updateCompte(destination);
+    }
+
+    private void creditingAccount(int id, double montant) {
+        CompteBancaire compteBancaire=em.find(CompteBancaire.class, id);
+        compteBancaire.crediting(montant);
     }
 
 }

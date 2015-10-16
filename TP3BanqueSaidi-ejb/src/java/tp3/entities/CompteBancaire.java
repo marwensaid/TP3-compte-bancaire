@@ -6,6 +6,7 @@
 package tp3.entities;
 
 import java.io.Serializable;
+import javax.ejb.EJBException;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -93,6 +94,18 @@ public class CompteBancaire implements Serializable {
     @Override
     public String toString() {
         return "tp3.CompteBancaire[ id=" + id + " ]";
+    }
+
+    public void debit(double montant) {
+        if (solde < montant) {
+            throw new EJBException();
+        } else {
+            solde -= montant;
+        }
+    }
+
+    public void crediting(double montant) {
+        solde += montant;
     }
 
 }
